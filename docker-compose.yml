@@ -1,0 +1,9 @@
+services:
+  netshack-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: netshack-control-web
+    ports:
+      - "8080:80"
+    restart: unless-stopped

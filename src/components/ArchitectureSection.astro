@@ -1,0 +1,421 @@
+---
+---
+
+<section id="features" class="features-section">
+  <div class="container">
+    <div class="section-eyebrow" data-i18n="feat_eyebrow">SUITE COMPLETA EN RUST</div>
+    <h2 class="section-title" data-i18n="feat_title">
+      Todo lo que necesitas en el shack y en remoto
+    </h2>
+    <p class="section-lead" data-i18n="feat_lead">
+      Tres herramientas diseñadas para trabajar juntas: la interfaz gráfica de escritorio <strong>netshack</strong>, la utilidad CLI <strong>nsc</strong> y el demonio remoto sin pantalla <strong>netshack-server</strong>.
+    </p>
+
+    <div class="features-grid">
+      <article class="feature-card">
+        <div class="feature-icon">📡</div>
+        <h3 data-i18n="f1_t">Doble VFO y Espectro a 30 fps</h3>
+        <p data-i18n="f1_d">
+          VFO A/B, Split, Dualwatch, matriz de bandas y modos, S-meter multifunción (Po, ROE, ALC, COMP, Vd, Id), cascada interactiva click-to-tune y plan de bandas IARU R1 integrado.
+        </p>
+        <div class="feature-meta">
+          <span>Zoom 1x–8x</span>
+          <span>Peak Hold</span>
+          <span>Dual Scope</span>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">🌐</div>
+        <h3 data-i18n="f2_t">USB CI-V, Icom LAN y Servidor Remoto</h3>
+        <p data-i18n="f2_d">
+          Conecta por protocolo UDP nativo de Icom (IC-7300MK2, IC-7610, IC-705, IC-9700...) con contraseñas en el llavero del SO, o mediante netshack-server con audio Opus de baja latencia.
+        </p>
+        <div class="feature-meta">
+          <span>UDP :50001</span>
+          <span>OS Keyring</span>
+          <span>WAV Record</span>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">🎛️</div>
+        <h3 data-i18n="f3_t">Controladores Físicos Nativos</h3>
+        <p data-i18n="f3_d">
+          Soporte directo plug-and-play para el dial USB Icom RC-28, ruedas Contour ShuttleXpress / ShuttlePRO v2 y cualquier superficie MIDI con aprendizaje interactivo (MIDI Learn).
+        </p>
+        <div class="feature-meta">
+          <span>Icom RC-28</span>
+          <span>ShuttlePRO v2</span>
+          <span>MIDI Learn</span>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">🔗</div>
+        <h3 data-i18n="f4_t">Puentes WSJT-X, Hamlib y FLRig</h3>
+        <p data-i18n="f4_d">
+          Comparte la radio simultáneamente con WSJT-X, JTDX, fldigi y GridTracker mediante servidor rigctld integrado (:4532), FLRig XML-RPC (:12345), CI-V TCP (:50051) y serie virtual.
+        </p>
+        <div class="feature-meta">
+          <span>rigctld :4532</span>
+          <span>FLRig :12345</span>
+          <span>CI-V :50051</span>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 data-i18n="f5_t">CW, Voz, Memorias y Macros P1–P12</h3>
+        <p data-i18n="f5_d">
+          Manipulador CW con Break-in (SEMI/FULL) y envío por teclado, 8 macros CW (M1–M8), 8 memorias de voz TX (T1–T8), escáner de memorias y 12 macros programables (P1–P12).
+        </p>
+        <div class="feature-meta">
+          <span>CW Keyer</span>
+          <span>Voice T1–T8</span>
+          <span>Macros P1–P12</span>
+        </div>
+      </article>
+
+      <article class="feature-card">
+        <div class="feature-icon">🧪</div>
+        <h3 data-i18n="f6_t">Radio Simulada y Disector Wireshark</h3>
+        <p data-i18n="f6_d">
+          Incluye nsc-radio-sim (simulador completo de IC-7300MK2 por CI-V y UDP LAN para probar sin hardware), conversor de perfiles wfview y disector Lua para Wireshark.
+        </p>
+        <div class="feature-meta">
+          <span>nsc-radio-sim</span>
+          <span>Wireshark Lua</span>
+          <span>Fluent i18n</span>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section id="architecture" class="arch-section">
+  <div class="container">
+    <div class="section-eyebrow" data-i18n="arch_eyebrow">ARQUITECTURA Y HARDWARE</div>
+    <h2 class="section-title" data-i18n="arch_title">
+      Del escritorio local a una estación remota en Raspberry Pi
+    </h2>
+    <p class="section-lead" data-i18n="arch_lead">
+      Opera equipos con red integrada o convierte cualquier transceptor Icom conectado por USB en una estación remota segura con control de permisos y corte automático de transmisión (Watchdog PTT).
+    </p>
+
+    <div class="showcase-split">
+      <div class="split-media">
+        <img
+          src="/imagenes/raspberry-server.jpg"
+          alt="Arquitectura remota con Raspberry Pi ejecutando netshack-server conectada a un transceptor Icom"
+          loading="lazy"
+        />
+        <div class="media-badge" data-i18n="arch_badge_pi">
+          netshack-server · Raspberry Pi ARM64 / Linux / Windows / macOS
+        </div>
+      </div>
+
+      <div class="split-content">
+        <h3 data-i18n="arch_b1_title">Modo Servidor Remoto (netshack-server) y LAN Nativa</h3>
+        <p data-i18n="arch_b1_desc">
+          Conecta tu radio por USB (CI-V serie + códec de audio USB) a una Raspberry Pi o mini-PC en el cuarto de radio y contrólala desde cualquier lugar a través de Tailscale o WireGuard.
+        </p>
+        <ul class="arch-list">
+          <li>
+            <strong>Watchdog de PTT y TOT:</strong>
+            <span data-i18n="arch_b1_l1">Corta la transmisión al instante si se pierde el keepalive de red o se supera el tiempo máximo (ptt_tot_secs).</span>
+          </li>
+          <li>
+            <strong>Permisos por usuario (can_tx):</strong>
+            <span data-i18n="arch_b1_l2">Define en server.toml qué operadores tienen permiso de transmisión (can_tx = true) y cuáles entran en modo solo escucha (SWL).</span>
+          </li>
+          <li>
+            <strong>Seguridad de credenciales:</strong>
+            <span data-i18n="arch_b1_l3">Las contraseñas LAN se guardan cifradas en el llavero del sistema (Credential Manager, macOS Keychain o Secret Service en Linux), nunca en texto plano.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="showcase-split reverse">
+      <div class="split-media">
+        <img
+          src="/imagenes/controllers-rig.jpg"
+          alt="Controladores físicos USB: dial rotatorio Icom RC-28, rueda jog-shuttle y superficie MIDI"
+          loading="lazy"
+        />
+        <div class="media-badge" data-i18n="arch_badge_ctrl">
+          RC-28 (0x0C26:0x001E) · Contour Shuttle · Superficies MIDI
+        </div>
+      </div>
+
+      <div class="split-content">
+        <h3 data-i18n="arch_b2_title">Tacto de Radio Real y Puentes para Modos Digitales</h3>
+        <p data-i18n="arch_b2_desc">
+          Sintoniza con la precisión de un VFO físico y mantén abiertos tus programas favoritos de FT8, RTTY, CW y libro de guardia al mismo tiempo sin conflictos de puerto serie.
+        </p>
+        <ul class="arch-list">
+          <li>
+            <strong>Icom RC-28 y Contour Shuttle:</strong>
+            <span data-i18n="arch_b2_l1">Multiplicador de pasos dinámico, PTT momentáneo o bloqueado y asignación de macros a los botones F-1 / F-2 y anillos Jog/Shuttle.</span>
+          </li>
+          <li>
+            <strong>MIDI Learn interactivo:</strong>
+            <span data-i18n="arch_b2_l2">Pulsa «Aprender Nota», «Aprender Dial (CC relativo)» o «Aprender Potenciómetro» para mapear encoders y faders físicos a ganancia AF/RF, filtros PBT o potencia.</span>
+          </li>
+          <li>
+            <strong>Detección de Audio Virtual:</strong>
+            <span data-i18n="arch_b2_l3">Integración directa con VB-Cable / Voicemeeter (Windows), BlackHole 2ch (macOS) y PipeWire / PulseAudio null-sink (Linux) para WSJT-X y JTDX.</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  window.registerTranslations({
+    es: {
+      feat_eyebrow: "SUITE COMPLETA EN RUST",
+      feat_title: "Todo lo que necesitas en el shack y en remoto",
+      feat_lead: "Tres herramientas diseñadas para trabajar juntas: la interfaz gráfica de escritorio netshack, la utilidad CLI nsc y el demonio remoto sin pantalla netshack-server.",
+      f1_t: "Doble VFO y Espectro a 30 fps",
+      f1_d: "VFO A/B, Split, Dualwatch, matriz de bandas y modos, S-meter multifunción (Po, ROE, ALC, COMP, Vd, Id), cascada interactiva click-to-tune y plan de bandas IARU R1 integrado.",
+      f2_t: "USB CI-V, Icom LAN y Servidor Remoto",
+      f2_d: "Conecta por protocolo UDP nativo de Icom (IC-7300MK2, IC-7610, IC-705, IC-9700...) con contraseñas en el llavero del SO, o mediante netshack-server con audio Opus de baja latencia.",
+      f3_t: "Controladores Físicos Nativos",
+      f3_d: "Soporte directo plug-and-play para el dial USB Icom RC-28, ruedas Contour ShuttleXpress / ShuttlePRO v2 y cualquier superficie MIDI con aprendizaje interactivo (MIDI Learn).",
+      f4_t: "Puentes WSJT-X, Hamlib y FLRig",
+      f4_d: "Comparte la radio simultáneamente con WSJT-X, JTDX, fldigi y GridTracker mediante servidor rigctld integrado (:4532), FLRig XML-RPC (:12345), CI-V TCP (:50051) y serie virtual.",
+      f5_t: "CW, Voz, Memorias y Macros P1–P12",
+      f5_d: "Manipulador CW con Break-in (SEMI/FULL) y envío por teclado, 8 macros CW (M1–M8), 8 memorias de voz TX (T1–T8), escáner de memorias y 12 macros programables (P1–P12).",
+      f6_t: "Radio Simulada y Disector Wireshark",
+      f6_d: "Incluye nsc-radio-sim (simulador completo de IC-7300MK2 por CI-V y UDP LAN para probar sin hardware), conversor de perfiles wfview y disector Lua para Wireshark.",
+      arch_eyebrow: "ARQUITECTURA Y HARDWARE",
+      arch_title: "Del escritorio local a una estación remota en Raspberry Pi",
+      arch_lead: "Opera equipos con red integrada o convierte cualquier transceptor Icom conectado por USB en una estación remota segura con control de permisos y corte automático de transmisión (Watchdog PTT).",
+      arch_badge_pi: "netshack-server · Raspberry Pi ARM64 / Linux / Windows / macOS",
+      arch_b1_title: "Modo Servidor Remoto (netshack-server) y LAN Nativa",
+      arch_b1_desc: "Conecta tu radio por USB (CI-V serie + códec de audio USB) a una Raspberry Pi o mini-PC en el cuarto de radio y contrólala desde cualquier lugar a través de Tailscale o WireGuard.",
+      arch_b1_l1: "Corta la transmisión al instante si se pierde el keepalive de red o se supera el tiempo máximo (ptt_tot_secs).",
+      arch_b1_l2: "Define en server.toml qué operadores tienen permiso de transmisión (can_tx = true) y cuáles entran en modo solo escucha (SWL).",
+      arch_b1_l3: "Las contraseñas LAN se guardan cifradas en el llavero del sistema (Credential Manager, macOS Keychain o Secret Service en Linux), nunca en texto plano.",
+      arch_badge_ctrl: "RC-28 (0x0C26:0x001E) · Contour Shuttle · Superficies MIDI",
+      arch_b2_title: "Tacto de Radio Real y Puentes para Modos Digitales",
+      arch_b2_desc: "Sintoniza con la precisión de un VFO físico y mantén abiertos tus programas favoritos de FT8, RTTY, CW y libro de guardia al mismo tiempo sin conflictos de puerto serie.",
+      arch_b2_l1: "Multiplicador de pasos dinámico, PTT momentáneo o bloqueado y asignación de macros a los botones F-1 / F-2 y anillos Jog/Shuttle.",
+      arch_b2_l2: "Pulsa «Aprender Nota», «Aprender Dial (CC relativo)» o «Aprender Potenciómetro» para mapear encoders y faders físicos a ganancia AF/RF, filtros PBT o potencia.",
+      arch_b2_l3: "Integración directa con VB-Cable / Voicemeeter (Windows), BlackHole 2ch (macOS) y PipeWire / PulseAudio null-sink (Linux) para WSJT-X y JTDX."
+    },
+    en: {
+      feat_eyebrow: "COMPLETE RUST SUITE",
+      feat_title: "Everything you need in the shack and remotely",
+      feat_lead: "Three tools built to work together: the netshack desktop GUI, the nsc CLI utility, and the headless netshack-server remote daemon.",
+      f1_t: "Dual VFO & 30 fps Spectrum",
+      f1_d: "VFO A/B, Split, Dualwatch, band & mode matrix, multi-metric S-meter (Po, SWR, ALC, COMP, Vd, Id), interactive click-to-tune waterfall, and built-in IARU R1 bandplan.",
+      f2_t: "USB CI-V, Icom LAN & Remote Server",
+      f2_d: "Connect via native Icom UDP protocol (IC-7300MK2, IC-7610, IC-705, IC-9700...) with OS keyring storage, or via netshack-server with low-latency Opus audio.",
+      f3_t: "Native Hardware Controllers",
+      f3_d: "Plug-and-play support for the Icom RC-28 USB encoder, Contour ShuttleXpress / ShuttlePRO v2 wheels, and any MIDI control surface with interactive MIDI Learn.",
+      f4_t: "WSJT-X, Hamlib & FLRig Bridges",
+      f4_d: "Share your radio simultaneously with WSJT-X, JTDX, fldigi, and GridTracker via built-in rigctld (:4532), FLRig XML-RPC (:12345), raw CI-V TCP (:50051), and virtual serial ports.",
+      f5_t: "CW, Voice, Memories & P1–P12 Macros",
+      f5_d: "CW keyer with Break-in (SEMI/FULL) and keyboard sending, 8 CW macros (M1–M8), 8 TX voice memories (T1–T8), memory scanner, and 12 programmable macros (P1–P12).",
+      f6_t: "Simulated Radio & Wireshark Dissector",
+      f6_d: "Ships with nsc-radio-sim (full IC-7300MK2 simulator over CI-V and UDP LAN for hardware-free testing), wfview profile converter, and a Wireshark Lua dissector.",
+      arch_eyebrow: "ARCHITECTURE & HARDWARE",
+      arch_title: "From local desktop to a Raspberry Pi remote station",
+      arch_lead: "Operate network-equipped transceivers directly or turn any USB-connected Icom radio into a secure remote station with per-user permissions and automatic PTT watchdog cutoff.",
+      arch_badge_pi: "netshack-server · Raspberry Pi ARM64 / Linux / Windows / macOS",
+      arch_b1_title: "Remote Server Mode (netshack-server) & Native LAN",
+      arch_b1_desc: "Plug your radio via USB (serial CI-V + USB audio codec) into a Raspberry Pi or mini-PC in the radio shack and operate from anywhere over Tailscale or WireGuard.",
+      arch_b1_l1: "Immediately drops transmission if client keepalive is lost or the maximum transmit timer (ptt_tot_secs) expires.",
+      arch_b1_l2: "Configure in server.toml which operators can transmit (can_tx = true) and which connect in receive-only mode (SWL).",
+      arch_b1_l3: "LAN passwords are encrypted in your OS keyring (Windows Credential Manager, macOS Keychain, Linux Secret Service), never in plain text files.",
+      arch_badge_ctrl: "RC-28 (0x0C26:0x001E) · Contour Shuttle · MIDI Surfaces",
+      arch_b2_title: "Tactile Hardware Tuning & Digital Mode Bridges",
+      arch_b2_desc: "Tune with the precision of a physical VFO knob while keeping your favorite FT8, RTTY, CW, and logging programs connected simultaneously without serial port conflicts.",
+      arch_b2_l1: "Dynamic step multiplier, momentary or latched PTT, and custom macro bindings for F-1 / F-2 buttons and Jog/Shuttle rings.",
+      arch_b2_l2: "Click 'Learn Note', 'Learn Dial (Relative CC)', or 'Learn Fader' to bind physical rotary encoders and sliders to AF/RF gain, Twin PBT, or TX power.",
+      arch_b2_l3: "Automatic virtual audio detection for VB-Cable / Voicemeeter (Windows), BlackHole 2ch (macOS), and PipeWire / PulseAudio null-sinks (Linux)."
+    }
+  });
+</script>
+
+<style>
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .feature-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--border-bright);
+    box-shadow: 0 18px 38px -15px rgba(56, 189, 248, 0.22);
+  }
+
+  .feature-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    color: var(--muted);
+    font-size: 0.94rem;
+    flex: 1;
+    margin-bottom: 18px;
+  }
+
+  .feature-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(35, 50, 82, 0.6);
+  }
+
+  .feature-meta span {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    color: var(--accent);
+    background: rgba(56, 189, 248, 0.08);
+    padding: 3px 9px;
+    border-radius: 6px;
+  }
+
+  /* Architecture Splits */
+  .showcase-split {
+    display: grid;
+    grid-template-columns: 1.08fr 1fr;
+    gap: 36px;
+    align-items: center;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 28px;
+  }
+
+  .showcase-split.reverse {
+    grid-template-columns: 1fr 1.08fr;
+  }
+
+  .showcase-split.reverse .split-media {
+    order: 2;
+  }
+
+  .split-media {
+    position: relative;
+    border-radius: 14px;
+    overflow: hidden;
+    border: 1px solid var(--border-bright);
+    line-height: 0;
+  }
+
+  .split-media img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .media-badge {
+    position: absolute;
+    left: 14px;
+    bottom: 14px;
+    background: rgba(7, 11, 20, 0.88);
+    backdrop-filter: blur(8px);
+    color: var(--accent);
+    border: 1px solid var(--border-bright);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    line-height: 1.3;
+  }
+
+  .split-content h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--text-bright);
+    margin-bottom: 12px;
+  }
+
+  .split-content > p {
+    color: var(--muted);
+    font-size: 0.98rem;
+    margin-bottom: 20px;
+  }
+
+  .arch-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .arch-list li {
+    position: relative;
+    padding-left: 22px;
+    font-size: 0.93rem;
+    color: var(--muted);
+  }
+
+  .arch-list li::before {
+    content: "▸";
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .arch-list li strong {
+    color: var(--text-bright);
+    margin-right: 4px;
+  }
+
+  @media (max-width: 980px) {
+    .features-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .showcase-split,
+    .showcase-split.reverse {
+      grid-template-columns: 1fr;
+    }
+    .showcase-split.reverse .split-media {
+      order: 0;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

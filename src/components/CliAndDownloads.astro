@@ -1,0 +1,393 @@
+---
+---
+
+<section id="cli" class="cli-section">
+  <div class="container">
+    <div class="section-eyebrow" data-i18n="cli_eyebrow">AUTOMATIZACIÓN Y SIMULADOR</div>
+    <h2 class="section-title" data-i18n="cli_title">
+      Pruébalo hoy mismo incluso sin tener la radio conectada
+    </h2>
+    <p class="section-lead" data-i18n="cli_lead">
+      El repositorio incluye <code>nsc-radio-sim</code>, que emula un <strong>IC-7300MK2</strong> completo tanto por CI-V como por protocolo UDP LAN de Icom. Automatiza frecuencias, modos, medidores en vivo y puentes CAT desde la consola con <code>nsc</code>.
+    </p>
+
+    <div class="terminal-window">
+      <div class="terminal-header">
+        <div class="term-tabs" role="tablist">
+          <button type="button" class="term-tab active" data-term-tab="sim" data-i18n="term_tab_sim">
+            1. Radio Simulada (nsc-radio-sim)
+          </button>
+          <button type="button" class="term-tab" data-term-tab="lan" data-i18n="term_tab_lan">
+            2. Conectar Radio por Red LAN
+          </button>
+          <button type="button" class="term-tab" data-term-tab="server" data-i18n="term_tab_srv">
+            3. Servidor USB / Raspberry Pi
+          </button>
+        </div>
+
+        <button type="button" id="copyCodeBtn" class="copy-btn" data-i18n="term_copy">
+          📋 Copiar comandos
+        </button>
+      </div>
+
+      <div class="terminal-body">
+        <pre class="term-pane active" data-term-pane="sim"><code><span class="c"># Terminal 1: Inicia el simulador de IC-7300MK2 (habla CI-V y protocolo UDP LAN Icom)</span>
+cargo run -p nsc-radio-sim -- --lan --listen 127.0.0.1:50101
+
+<span class="c"># Terminal 2: Abre la interfaz gráfica de escritorio (netshack) o controla desde la CLI (nsc)</span>
+cargo run -p nsc-gui
+cargo run -p nsc-cli -- freq 21.224
+cargo run -p nsc-cli -- mode USB --filter 1
+cargo run -p nsc-cli -- meters --watch
+cargo run -p nsc-cli -- --lang es info</code></pre>
+
+        <pre class="term-pane" data-term-pane="lan"><code><span class="c"># Guarda la contraseña una sola vez en el llavero seguro del sistema operativo</span>
+nsc --lan 192.168.1.20 --user EA1XXX password
+
+<span class="c"># Comprueba encendido/espera, lee información del equipo y monitoriza medidores en vivo</span>
+nsc --lan 192.168.1.20 --user EA1XXX power
+nsc --lan 192.168.1.20 --user EA1XXX info
+nsc --lan 192.168.1.20 --user EA1XXX meters --watch --with-audio</code></pre>
+
+        <pre class="term-pane" data-term-pane="server"><code><span class="c"># En la Raspberry Pi o PC con la radio conectada por USB:</span>
+netshack-server --generate-config /etc/netshack/server.toml
+netshack-server --list-audio
+netshack-server --config /etc/netshack/server.toml
+
+<span class="c"># Levantar puentes simultáneos para WSJT-X, JTDX, fldigi y libros de guardia:</span>
+nsc bridge --rigctld 127.0.0.1:4532 --flrig 127.0.0.1:12345 --civ-tcp 127.0.0.1:50051</code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="downloads" class="downloads-section">
+  <div class="container">
+    <div class="section-eyebrow" data-i18n="dl_eyebrow">MULTIPLATAFORMA · GPL-3.0</div>
+    <h2 class="section-title" data-i18n="dl_title">
+      Descargas y compilación desde el código fuente
+    </h2>
+    <p class="section-lead" data-i18n="dl_lead">
+      Cada paquete incluye los tres binarios listos para usar: la interfaz de escritorio <code>netshack</code>, la utilidad de consola <code>nsc</code> y el demonio remoto <code>netshack-server</code>.
+    </p>
+
+    <div class="dl-grid">
+      <article class="dl-card">
+        <div class="dl-os-head">
+          <span class="dl-os-icon">🪟</span>
+          <div>
+            <h3>Windows 10 / 11</h3>
+            <span>x86_64 · Portable ZIP</span>
+          </div>
+        </div>
+        <p data-i18n="dl_win_desc">
+          Incluye <code>netshack.exe</code>, <code>nsc.exe</code> y <code>netshack-server.exe</code>. Soporta Windows Credential Manager y detección de VB-Cable / Voicemeeter.
+        </p>
+        <div class="dl-pkg-box">netshack-windows-x86_64.zip</div>
+      </article>
+
+      <article class="dl-card">
+        <div class="dl-os-head">
+          <span class="dl-os-icon">🍎</span>
+          <div>
+            <h3>macOS</h3>
+            <span>Apple Silicon (M1–M4) &amp; Intel</span>
+          </div>
+        </div>
+        <p data-i18n="dl_mac_desc">
+          Binarios nativos para ARM64 y x86_64 con integración en Llavero de macOS (Keychain), CoreAudio, CoreMIDI y detección de BlackHole 2ch.
+        </p>
+        <div class="dl-pkg-box">netshack-macos-arm64.tar.gz</div>
+      </article>
+
+      <article class="dl-card">
+        <div class="dl-os-head">
+          <span class="dl-os-icon">🐧</span>
+          <div>
+            <h3>Linux &amp; Raspberry Pi</h3>
+            <span>Debian/Ubuntu .deb · x86_64 · ARM64</span>
+          </div>
+        </div>
+        <p data-i18n="dl_lin_desc">
+          Paquete <code>.deb</code> e imágenes ARM64 para Raspberry Pi 4/5 con servicio <code>systemd</code>, ALSA/PipeWire, reglas <code>udev</code> para RC-28 y Secret Service.
+        </p>
+        <div class="dl-pkg-box">netshack-linux-amd64.deb / arm64.tar.gz</div>
+      </article>
+    </div>
+
+    <div class="build-source-card">
+      <div class="build-source-text">
+        <h3 data-i18n="build_title">Compilar desde el código fuente con Cargo</h3>
+        <p data-i18n="build_desc">
+          Requiere Rust 1.85+ (estable). En Debian/Ubuntu instala <code>libasound2-dev</code> y <code>libudev-dev</code>; en Windows las Visual Studio Build Tools con C++.
+        </p>
+        <div class="build-cta-links">
+          <a href="/manual" class="btn btn-primary" data-i18n="build_btn_manual">
+            📖 Abrir Manual de Usuario Completo (ES / EN)
+          </a>
+        </div>
+      </div>
+
+      <pre class="build-code"><code><span class="c"># En Linux (Debian / Ubuntu / Raspberry Pi OS):</span>
+sudo apt install libasound2-dev libudev-dev
+
+<span class="c"># Compilar y ejecutar tests de todo el workspace:</span>
+cargo build --release --workspace
+cargo test --workspace</code></pre>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  window.registerTranslations({
+    es: {
+      cli_eyebrow: "AUTOMATIZACIÓN Y SIMULADOR",
+      cli_title: "Pruébalo hoy mismo incluso sin tener la radio conectada",
+      cli_lead: "El repositorio incluye nsc-radio-sim, que emula un IC-7300MK2 completo tanto por CI-V como por protocolo UDP LAN de Icom. Automatiza frecuencias, modos, medidores en vivo y puentes CAT desde la consola con nsc.",
+      term_tab_sim: "1. Radio Simulada (nsc-radio-sim)",
+      term_tab_lan: "2. Conectar Radio por Red LAN",
+      term_tab_srv: "3. Servidor USB / Raspberry Pi",
+      term_copy: "📋 Copiar comandos",
+      dl_eyebrow: "MULTIPLATAFORMA · GPL-3.0",
+      dl_title: "Descargas y compilación desde el código fuente",
+      dl_lead: "Cada paquete incluye los tres binarios listos para usar: la interfaz de escritorio netshack, la utilidad de consola nsc y el demonio remoto netshack-server.",
+      dl_win_desc: "Incluye netshack.exe, nsc.exe y netshack-server.exe. Soporta Windows Credential Manager y detección de VB-Cable / Voicemeeter.",
+      dl_mac_desc: "Binarios nativos para ARM64 y x86_64 con integración en Llavero de macOS (Keychain), CoreAudio, CoreMIDI y detección de BlackHole 2ch.",
+      dl_lin_desc: "Paquete .deb e imágenes ARM64 para Raspberry Pi 4/5 con servicio systemd, ALSA/PipeWire, reglas udev para RC-28 y Secret Service.",
+      build_title: "Compilar desde el código fuente con Cargo",
+      build_desc: "Requiere Rust 1.85+ (estable). En Debian/Ubuntu instala libasound2-dev y libudev-dev; en Windows las Visual Studio Build Tools con C++.",
+      build_btn_manual: "📖 Abrir Manual de Usuario Completo (ES / EN)"
+    },
+    en: {
+      cli_eyebrow: "AUTOMATION & SIMULATOR",
+      cli_title: "Try it today even without a physical radio attached",
+      cli_lead: "The repository includes nsc-radio-sim, emulating a full IC-7300MK2 over both CI-V and Icom's UDP LAN protocol. Script frequencies, modes, live meters, and CAT bridges from the terminal with nsc.",
+      term_tab_sim: "1. Simulated Radio (nsc-radio-sim)",
+      term_tab_lan: "2. Connect Over LAN",
+      term_tab_srv: "3. USB Server / Raspberry Pi",
+      term_copy: "📋 Copy commands",
+      dl_eyebrow: "CROSS-PLATFORM · GPL-3.0",
+      dl_title: "Downloads & building from source",
+      dl_lead: "Every release archive bundles all three binaries ready to run: the netshack desktop GUI, the nsc CLI utility, and the netshack-server daemon.",
+      dl_win_desc: "Includes netshack.exe, nsc.exe, and netshack-server.exe. Supports Windows Credential Manager and automatic VB-Cable / Voicemeeter detection.",
+      dl_mac_desc: "Native ARM64 and x86_64 binaries with macOS Keychain integration, CoreAudio, CoreMIDI, and BlackHole 2ch detection.",
+      dl_lin_desc: ".deb package and ARM64 builds for Raspberry Pi 4/5 with systemd unit, ALSA/PipeWire, RC-28 udev rules, and Secret Service.",
+      build_title: "Build from source with Cargo",
+      build_desc: "Requires Rust 1.85+ (stable). On Debian/Ubuntu install libasound2-dev and libudev-dev; on Windows install Visual Studio C++ Build Tools.",
+      build_btn_manual: "📖 Open Complete User Manual (ES / EN)"
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const termTabs = document.querySelectorAll('[data-term-tab]');
+    const termPanes = document.querySelectorAll('[data-term-pane]');
+    const copyBtn = document.getElementById('copyCodeBtn');
+
+    termTabs.forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const key = tab.getAttribute('data-term-tab');
+        termTabs.forEach((t) => t.classList.remove('active'));
+        tab.classList.add('active');
+        termPanes.forEach((p) => {
+          p.classList.toggle('active', p.getAttribute('data-term-pane') === key);
+        });
+      });
+    });
+
+    copyBtn?.addEventListener('click', () => {
+      const activePane = document.querySelector('.term-pane.active');
+      if (activePane) {
+        navigator.clipboard.writeText(activePane.textContent || '');
+        const prev = copyBtn.textContent;
+        copyBtn.textContent = '✓ Copiado';
+        setTimeout(() => {
+          copyBtn.textContent = prev;
+        }, 1600);
+      }
+    });
+  });
+</script>
+
+<style>
+  .terminal-window {
+    background: #060a14;
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 45px -15px rgba(0, 0, 0, 0.75);
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #0d1629;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .term-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .term-tab {
+    background: transparent;
+    color: var(--muted);
+    border: 1px solid transparent;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .term-tab:hover,
+  .term-tab.active {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--accent);
+    border-color: rgba(56, 189, 248, 0.35);
+  }
+
+  .copy-btn {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+
+  .copy-btn:hover {
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .terminal-body {
+    padding: 24px;
+  }
+
+  .term-pane {
+    display: none;
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: #e2e8f0;
+    overflow-x: auto;
+  }
+
+  .term-pane.active {
+    display: block;
+  }
+
+  .term-pane .c,
+  .build-code .c {
+    color: #64748b;
+  }
+
+  /* Downloads */
+  .dl-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 28px;
+  }
+
+  .dl-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .dl-os-head {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .dl-os-icon {
+    font-size: 2rem;
+  }
+
+  .dl-os-head h3 {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--text-bright);
+  }
+
+  .dl-os-head span {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    color: var(--accent);
+  }
+
+  .dl-card p {
+    color: var(--muted);
+    font-size: 0.92rem;
+    flex: 1;
+  }
+
+  .dl-pkg-box {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: #070b14;
+    border: 1px solid var(--border);
+    color: #4ade80;
+    text-align: center;
+  }
+
+  .build-source-card {
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 28px;
+    align-items: center;
+    background: linear-gradient(135deg, rgba(17, 26, 46, 0.95), rgba(11, 17, 32, 0.95));
+    border: 1px solid var(--border-bright);
+    border-radius: 18px;
+    padding: 30px;
+  }
+
+  .build-source-text h3 {
+    font-family: var(--font-display);
+    font-size: 1.4rem;
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .build-source-text p {
+    color: var(--muted);
+    font-size: 0.95rem;
+    margin-bottom: 20px;
+  }
+
+  .build-code {
+    background: #060a14;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    overflow-x: auto;
+  }
+
+  @media (max-width: 920px) {
+    .dl-grid,
+    .build-source-card {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

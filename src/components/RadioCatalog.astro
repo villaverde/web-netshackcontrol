@@ -1,0 +1,293 @@
+---
+import { SUPPORTED_RADIOS } from '../i18n/translations';
+---
+
+<section id="radios" class="radios-section">
+  <div class="container">
+    <div class="section-eyebrow" data-i18n="radios_eyebrow">COMPATIBILIDAD DE FÁBRICA</div>
+    <h2 class="section-title" data-i18n="radios_title">
+      Perfiles integrados para 17 transceptores Icom
+    </h2>
+    <p class="section-lead" data-i18n="radios_lead">
+      Cada perfil incluye su dirección CI-V por defecto, rangos de bandas, modos, anchuras de filtro, mapeo de medidores y capacidades de red UDP o analizador de espectro. Además, incluye conversor directo de perfiles de <code>wfview</code>.
+    </p>
+
+    <div class="radios-filter-bar">
+      <div class="filter-pills">
+        <button type="button" class="filter-pill active" data-radio-filter="all" data-i18n="rf_all">
+          Todos (17)
+        </button>
+        <button type="button" class="filter-pill" data-radio-filter="lan" data-i18n="rf_lan">
+          🌐 Red IP / LAN Nativa
+        </button>
+        <button type="button" class="filter-pill" data-radio-filter="dual" data-i18n="rf_dual">
+          🔀 Doble Receptor (Dualwatch)
+        </button>
+        <button type="button" class="filter-pill" data-radio-filter="spectrum" data-i18n="rf_spec">
+          📈 Espectro / Cascada
+        </button>
+        <button type="button" class="filter-pill" data-radio-filter="vhf" data-i18n="rf_vhf">
+          🛰️ VHF / UHF / SHF
+        </button>
+      </div>
+
+      <div class="radio-search-wrap">
+        <input
+          type="search"
+          id="radioSearchInput"
+          class="radio-search"
+          placeholder="Buscar modelo (ej. IC-7300MK2, IC-7610...)"
+          data-i18n-placeholder="rf_search_ph"
+        />
+      </div>
+    </div>
+
+    <div class="radios-cards-grid" id="radiosGrid">
+      {SUPPORTED_RADIOS.map((rig) => (
+        <article
+          class="rig-card"
+          data-model={rig.model.toLowerCase()}
+          data-lan={rig.lan ? 'true' : 'false'}
+          data-dual={rig.dualRx ? 'true' : 'false'}
+          data-spectrum={rig.spectrum ? 'true' : 'false'}
+          data-cat={rig.category}
+        >
+          <div class="rig-card-top">
+            <span class="rig-model">{rig.model}</span>
+            <span class="rig-civ" title="Dirección CI-V por defecto">CI-V {rig.civ}</span>
+          </div>
+
+          <div class="rig-bands">{rig.bands}</div>
+          <p class="rig-highlight">{rig.highlight}</p>
+
+          <div class="rig-caps">
+            {rig.lan ? (
+              <span class="cap-tag cap-lan">LAN UDP</span>
+            ) : (
+              <span class="cap-tag cap-usb">USB / Server</span>
+            )}
+            {rig.spectrum && <span class="cap-tag cap-spec">Waterfall</span>}
+            {rig.dualRx && <span class="cap-tag cap-dual">Dual RX</span>}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  window.registerTranslations({
+    es: {
+      radios_eyebrow: "COMPATIBILIDAD DE FÁBRICA",
+      radios_title: "Perfiles integrados para 17 transceptores Icom",
+      radios_lead: "Cada perfil incluye su dirección CI-V por defecto, rangos de bandas, modos, anchuras de filtro, mapeo de medidores y capacidades de red UDP o analizador de espectro. Además, incluye conversor directo de perfiles de wfview.",
+      rf_all: "Todos (17)",
+      rf_lan: "🌐 Red IP / LAN Nativa",
+      rf_dual: "🔀 Doble Receptor (Dualwatch)",
+      rf_spec: "📈 Espectro / Cascada",
+      rf_vhf: "🛰️ VHF / UHF / SHF",
+      rf_search_ph: "Buscar modelo (ej. IC-7300MK2, IC-7610...)"
+    },
+    en: {
+      radios_eyebrow: "OUT-OF-THE-BOX SUPPORT",
+      radios_title: "Built-in profiles for 17 Icom transceivers",
+      radios_lead: "Each profile includes default CI-V address, band ranges, modes, filter widths, meter calibration, and native UDP LAN or spectrum scope capabilities. Also includes a wfview profile converter.",
+      rf_all: "All (17)",
+      rf_lan: "🌐 Native IP / LAN",
+      rf_dual: "🔀 Dual Receiver (Dualwatch)",
+      rf_spec: "📈 Spectrum / Waterfall",
+      rf_vhf: "🛰️ VHF / UHF / SHF",
+      rf_search_ph: "Search model (e.g. IC-7300MK2, IC-7610...)"
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const filterButtons = document.querySelectorAll('[data-radio-filter]');
+    const searchInput = document.getElementById('radioSearchInput');
+    const cards = document.querySelectorAll('.rig-card');
+
+    let currentFilter = 'all';
+    let currentQuery = '';
+
+    function applyFilter() {
+      cards.forEach((card) => {
+        const model = card.getAttribute('data-model') || '';
+        const isLan = card.getAttribute('data-lan') === 'true';
+        const isDual = card.getAttribute('data-dual') === 'true';
+        const isSpec = card.getAttribute('data-spectrum') === 'true';
+        const cat = card.getAttribute('data-cat') || '';
+
+        let matchFilter = true;
+        if (currentFilter === 'lan') matchFilter = isLan;
+        else if (currentFilter === 'dual') matchFilter = isDual;
+        else if (currentFilter === 'spectrum') matchFilter = isSpec;
+        else if (currentFilter === 'vhf') matchFilter = cat === 'vhf' || cat === 'portable' || cat === 'receiver';
+
+        const matchQuery = !currentQuery || model.includes(currentQuery);
+        card.style.display = matchFilter && matchQuery ? 'flex' : 'none';
+      });
+    }
+
+    filterButtons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-radio-filter') || 'all';
+        applyFilter();
+      });
+    });
+
+    searchInput?.addEventListener('input', (e) => {
+      currentQuery = (e.target.value || '').trim().toLowerCase();
+      applyFilter();
+    });
+  });
+</script>
+
+<style>
+  .radios-filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 26px;
+  }
+
+  .filter-pills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filter-pill {
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .filter-pill:hover,
+  .filter-pill.active {
+    background: rgba(56, 189, 248, 0.15);
+    color: var(--text-bright);
+    border-color: var(--accent);
+  }
+
+  .radio-search {
+    background: var(--surface);
+    color: var(--text-bright);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 9px 14px;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    min-width: 270px;
+    outline: none;
+  }
+
+  .radio-search:focus {
+    border-color: var(--accent);
+  }
+
+  .radios-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+    gap: 16px;
+  }
+
+  .rig-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.18s ease, border-color 0.18s ease;
+  }
+
+  .rig-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--border-bright);
+  }
+
+  .rig-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .rig-model {
+    font-family: var(--font-mono);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--text-bright);
+  }
+
+  .rig-civ {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    padding: 2px 8px;
+    border-radius: 6px;
+    background: #0b1120;
+    border: 1px solid var(--border);
+    color: var(--accent);
+  }
+
+  .rig-bands {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: #38bdf8;
+  }
+
+  .rig-highlight {
+    font-size: 0.86rem;
+    color: var(--muted);
+    flex: 1;
+  }
+
+  .rig-caps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+
+  .cap-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 5px;
+  }
+
+  .cap-lan {
+    background: rgba(34, 197, 94, 0.14);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+  }
+
+  .cap-usb {
+    background: rgba(148, 163, 184, 0.12);
+    color: #cbd5e1;
+    border: 1px solid rgba(148, 163, 184, 0.25);
+  }
+
+  .cap-spec {
+    background: rgba(56, 189, 248, 0.14);
+    color: #38bdf8;
+    border: 1px solid rgba(56, 189, 248, 0.3);
+  }
+
+  .cap-dual {
+    background: rgba(245, 158, 11, 0.14);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+</style>

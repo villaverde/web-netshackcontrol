@@ -1,0 +1,812 @@
+---
+---
+
+<section class="hero-section">
+  <div class="container">
+    <div class="hero-header">
+      <div class="hero-badges">
+        <span class="badge-pill badge-cyan" data-i18n="hero_badge_main">
+          Open Source · GPL-3.0 · Rust · Windows / macOS / Linux
+        </span>
+        <span class="badge-pill badge-green" data-i18n="hero_badge_sub">
+          Alternativa libre a Icom RS-BA1 V2
+        </span>
+      </div>
+
+      <h1 class="hero-title" data-i18n="hero_title">
+        Control remoto total para tu estación Icom
+      </h1>
+
+      <p class="hero-subtitle" data-i18n="hero_desc">
+        Suite multiplataforma de control CAT/CI-V y red UDP nativa, analizador de espectro y cascada a 30 fps, audio RX/TX de baja latencia, manipulador CW, controladores físicos (RC-28, Shuttle, MIDI) y servidor headless para Raspberry Pi.
+      </p>
+
+      <div class="hero-cta-row">
+        <a href="#downloads" class="btn btn-primary">
+          <span>⬇</span>
+          <span data-i18n="cta_download">Descargar / Compilar</span>
+        </a>
+        <a href="#screenshots" class="btn btn-secondary">
+          <span>🖼</span>
+          <span data-i18n="cta_screenshots">Ver Galería de Capturas</span>
+        </a>
+        <a href="/manual" class="btn btn-secondary">
+          <span>📖</span>
+          <span data-i18n="cta_manual">Manual de Usuario</span>
+        </a>
+      </div>
+
+      <div class="hero-metrics">
+        <div class="metric-item">
+          <span class="metric-val">17</span>
+          <span class="metric-lbl" data-i18n="metric_rigs">Perfiles Icom integrados</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="metric-val">30 FPS</span>
+          <span class="metric-lbl" data-i18n="metric_fps">Espectro + Cascada en vivo</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="metric-val">3 en 1</span>
+          <span class="metric-lbl" data-i18n="metric_bins">GUI · CLI · Servidor Pi</span>
+        </div>
+        <div class="metric-divider"></div>
+        <div class="metric-item">
+          <span class="metric-val">100% Rust</span>
+          <span class="metric-lbl" data-i18n="metric_rust">Nativo y ultrarrápido</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Showcase Frame with toggle between Real App Screenshot & Live Interactive Waterfall -->
+    <div class="hero-showcase">
+      <div class="showcase-toolbar">
+        <div class="window-dots">
+          <span class="dot dot-red"></span>
+          <span class="dot dot-amber"></span>
+          <span class="dot dot-green"></span>
+          <span class="window-title">NetShack Control — Conectado (IC-7300MK2)</span>
+        </div>
+
+        <div class="showcase-mode-tabs" role="tablist">
+          <button
+            type="button"
+            class="mode-tab active"
+            data-hero-mode="real"
+            data-i18n="hero_tab_real"
+          >
+            📸 Captura Real (IC-7300MK2)
+          </button>
+          <button
+            type="button"
+            class="mode-tab"
+            data-hero-mode="sim"
+            data-i18n="hero_tab_sim"
+          >
+            ⚡ Probar Cascada Interactiva
+          </button>
+        </div>
+      </div>
+
+      <!-- Panel 1: Real Screenshot with hotspots -->
+      <div class="showcase-pane active" id="heroPaneReal">
+        <div class="real-shot-wrapper">
+          <img
+            src="/imagenes/screenshots/Screenshot_1.jpg"
+            alt="NetShack Control conectado a un Icom IC-7300MK2 en 21.224.000 MHz con espectro y cascada en tiempo real"
+            class="hero-main-img"
+            loading="eager"
+          />
+          <div class="shot-badges-overlay">
+            <span class="overlay-chip" data-i18n="chip_vfo">Doble VFO + Plan IARU R1</span>
+            <span class="overlay-chip" data-i18n="chip_smeter">Medidor S, Po, ROE, ALC y Vd</span>
+            <span class="overlay-chip" data-i18n="chip_dsp">DSP Twin PBT, NB, NR y Notch</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Panel 2: Interactive Live Waterfall Simulator -->
+      <div class="showcase-pane" id="heroPaneSim">
+        <div class="sim-top-panel">
+          <div class="sim-vfo-box">
+            <div class="sim-vfo-badges">
+              <span class="vfo-tag active">VFO A</span>
+              <span class="vfo-tag">USB</span>
+              <span class="vfo-tag">FIL1</span>
+              <span class="vfo-tag">PRE1</span>
+            </div>
+            <div class="sim-freq-display" id="simFreqReadout" title="Haz clic en la cascada o usa los botones de banda">
+              21.224.000 <small>MHz</small>
+            </div>
+            <div class="sim-vfob-line">
+              <span>VFO B: <strong>14.074.000 MHz</strong> USB · FIL2</span>
+            </div>
+          </div>
+
+          <div class="sim-bands-box">
+            <div class="sim-box-label" data-i18n="sim_select_band">Sintonía rápida (Haz clic en banda o en el espectro):</div>
+            <div class="sim-band-buttons">
+              <button type="button" class="sim-band-btn" data-freq="7.099000" data-mode="LSB" data-band="40m">40m · 7.099 LSB</button>
+              <button type="button" class="sim-band-btn" data-freq="14.074000" data-mode="USB-D" data-band="20m">20m · 14.074 FT8</button>
+              <button type="button" class="sim-band-btn active" data-freq="21.224000" data-mode="USB" data-band="15m">15m · 21.224 USB</button>
+              <button type="button" class="sim-band-btn" data-freq="28.450000" data-mode="USB" data-band="10m">10m · 28.450 USB</button>
+            </div>
+          </div>
+
+          <div class="sim-smeter-box">
+            <div class="sim-smeter-head">
+              <span>Medidor S</span>
+              <strong id="simSValue">S9 +10dB</strong>
+            </div>
+            <div class="sim-smeter-bar">
+              <div class="sim-smeter-fill" id="simSFill" style="width: 68%;"></div>
+            </div>
+            <div class="sim-smeter-scale">
+              <span>S1</span><span>3</span><span>5</span><span>7</span><span>9</span><span class="red">+20</span><span class="red">+40</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="sim-canvas-wrap">
+          <div class="sim-bandplan-bar">
+            <span class="bp-cw">CW</span>
+            <span class="bp-digi">DIGI / FT8</span>
+            <span class="bp-ssb">SSB / PHONE (IARU R1)</span>
+          </div>
+          <canvas id="waterfallCanvas" width="1100" height="320"></canvas>
+          <div class="sim-tune-line" id="simTuneLine" style="left: 50%;"></div>
+          <div class="sim-hint" data-i18n="sim_click_hint">
+            💡 Haz clic o arrastra sobre el espectro/cascada para sintonizar en tiempo real
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  window.registerTranslations({
+    es: {
+      hero_badge_main: "Open Source · GPL-3.0 · Rust · Windows / macOS / Linux",
+      hero_badge_sub: "Alternativa libre a Icom RS-BA1 V2",
+      hero_title: "Control remoto total para tu estación Icom",
+      hero_desc: "Suite multiplataforma de control CAT/CI-V y red UDP nativa, analizador de espectro y cascada a 30 fps, audio RX/TX de baja latencia, manipulador CW, controladores físicos (RC-28, Shuttle, MIDI) y servidor headless para Raspberry Pi.",
+      cta_download: "Descargar / Compilar",
+      cta_screenshots: "Ver Galería de Capturas",
+      cta_manual: "Manual de Usuario",
+      metric_rigs: "Perfiles Icom integrados",
+      metric_fps: "Espectro + Cascada en vivo",
+      metric_bins: "GUI · CLI · Servidor Pi",
+      metric_rust: "Nativo y ultrarrápido",
+      hero_tab_real: "📸 Captura Real (IC-7300MK2)",
+      hero_tab_sim: "⚡ Probar Cascada Interactiva",
+      chip_vfo: "Doble VFO + Plan IARU R1",
+      chip_smeter: "Medidor S, Po, ROE, ALC y Vd",
+      chip_dsp: "DSP Twin PBT, NB, NR y Notch",
+      sim_select_band: "Sintonía rápida (Haz clic en banda o en el espectro):",
+      sim_click_hint: "💡 Haz clic o arrastra sobre el espectro/cascada para sintonizar en tiempo real"
+    },
+    en: {
+      hero_badge_main: "Open Source · GPL-3.0 · Rust · Windows / macOS / Linux",
+      hero_badge_sub: "Free alternative to Icom RS-BA1 V2",
+      hero_title: "Complete Remote Control for Your Icom Station",
+      hero_desc: "Cross-platform CAT/CI-V & native UDP LAN control suite with 30 fps real-time spectrum/waterfall, low-latency RX/TX audio, CW keyer, hardware controllers (RC-28, Shuttle, MIDI), and a headless Raspberry Pi server.",
+      cta_download: "Download / Build",
+      cta_screenshots: "View Screenshot Gallery",
+      cta_manual: "User Manual",
+      metric_rigs: "Built-in Icom profiles",
+      metric_fps: "Live Spectrum + Waterfall",
+      metric_bins: "GUI · CLI · Pi Server",
+      metric_rust: "Native & blazing fast",
+      hero_tab_real: "📸 Real Screenshot (IC-7300MK2)",
+      hero_tab_sim: "⚡ Try Interactive Waterfall",
+      chip_vfo: "Dual VFO + IARU R1 Bandplan",
+      chip_smeter: "S-Meter, Po, SWR, ALC & Vd",
+      chip_dsp: "Twin PBT DSP, NB, NR & Notch",
+      sim_select_band: "Quick Tune (Click a band or click on the spectrum):",
+      sim_click_hint: "💡 Click or drag anywhere on the spectrum/waterfall to tune in real time"
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const modeTabs = document.querySelectorAll('[data-hero-mode]');
+    const paneReal = document.getElementById('heroPaneReal');
+    const paneSim = document.getElementById('heroPaneSim');
+
+    let animRunning = false;
+
+    modeTabs.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const mode = btn.getAttribute('data-hero-mode');
+        modeTabs.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (mode === 'sim') {
+          paneReal?.classList.remove('active');
+          paneSim?.classList.add('active');
+          if (!animRunning) startWaterfall();
+        } else {
+          paneSim?.classList.remove('active');
+          paneReal?.classList.add('active');
+        }
+      });
+    });
+
+    // Interactive Waterfall Canvas
+    const canvas = document.getElementById('waterfallCanvas');
+    const freqReadout = document.getElementById('simFreqReadout');
+    const tuneLine = document.getElementById('simTuneLine');
+    const sFill = document.getElementById('simSFill');
+    const sValue = document.getElementById('simSValue');
+    const bandBtns = document.querySelectorAll('.sim-band-btn');
+
+    let centerFreq = 21.224;
+    let tuneRatio = 0.5;
+    const peaks = [
+      { pos: 0.16, amp: 0.62, width: 0.012 },
+      { pos: 0.28, amp: 0.45, width: 0.018 },
+      { pos: 0.41, amp: 0.85, width: 0.010 },
+      { pos: 0.50, amp: 0.72, width: 0.014 },
+      { pos: 0.67, amp: 0.92, width: 0.011 },
+      { pos: 0.81, amp: 0.54, width: 0.016 }
+    ];
+
+    function updateFreqDisplay() {
+      const offsetMhz = (tuneRatio - 0.5) * 0.25; // +-125kHz span
+      const tuned = (centerFreq + offsetMhz).toFixed(6);
+      const parts = tuned.split('.');
+      const formatted = `${parts[0]}.${parts[1].slice(0, 3)}.${parts[1].slice(3, 6)}`;
+      if (freqReadout) {
+        freqReadout.innerHTML = `${formatted} <small>MHz</small>`;
+      }
+      if (tuneLine) {
+        tuneLine.style.left = `${tuneRatio * 100}%`;
+      }
+    }
+
+    bandBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        bandBtns.forEach((b) => b.classList.remove('active'));
+        btn.classList.add('active');
+        centerFreq = parseFloat(btn.getAttribute('data-freq') || '21.224');
+        tuneRatio = 0.5;
+        updateFreqDisplay();
+      });
+    });
+
+    if (canvas) {
+      const setTuneFromEvent = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const x = Math.max(0.02, Math.min(0.98, (e.clientX - rect.left) / rect.width));
+        tuneRatio = x;
+        updateFreqDisplay();
+      };
+
+      let dragging = false;
+      canvas.addEventListener('mousedown', (e) => {
+        dragging = true;
+        setTuneFromEvent(e);
+      });
+      window.addEventListener('mousemove', (e) => {
+        if (dragging) setTuneFromEvent(e);
+      });
+      window.addEventListener('mouseup', () => {
+        dragging = false;
+      });
+    }
+
+    function startWaterfall() {
+      if (!canvas) return;
+      animRunning = true;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      const W = canvas.width;
+      const H = canvas.height;
+      const specH = 135;
+      const wfY = specH + 2;
+      const wfH = H - wfY;
+
+      ctx.fillStyle = '#060c18';
+      ctx.fillRect(0, 0, W, H);
+
+      function renderFrame() {
+        // Shift waterfall down by 2px
+        const imgData = ctx.getImageData(0, wfY, W, wfH - 2);
+        ctx.putImageData(imgData, 0, wfY + 2);
+
+        // Clear spectrum area
+        ctx.fillStyle = '#07101f';
+        ctx.fillRect(0, 0, W, specH);
+
+        // Grid lines
+        ctx.strokeStyle = 'rgba(56, 189, 248, 0.12)';
+        ctx.lineWidth = 1;
+        for (let i = 1; i < 8; i++) {
+          const gx = (W / 8) * i;
+          ctx.beginPath();
+          ctx.moveTo(gx, 0);
+          ctx.lineTo(gx, specH);
+          ctx.stroke();
+        }
+        for (let j = 1; j < 4; j++) {
+          const gy = (specH / 4) * j;
+          ctx.beginPath();
+          ctx.moveTo(0, gy);
+          ctx.lineTo(W, gy);
+          ctx.stroke();
+        }
+
+        // Compute spectrum values
+        const bins = 220;
+        const vals = new Float32Array(bins);
+        let tunedSignal = 0.18;
+
+        for (let i = 0; i < bins; i++) {
+          const normX = i / bins;
+          let v = 0.12 + Math.random() * 0.08;
+          for (const p of peaks) {
+            const d = (normX - p.pos) / p.width;
+            v += p.amp * Math.exp(-0.5 * d * d) * (0.85 + Math.random() * 0.25);
+          }
+          vals[i] = Math.min(0.95, v);
+          if (Math.abs(normX - tuneRatio) < 0.015) {
+            tunedSignal = Math.max(tunedSignal, vals[i]);
+          }
+        }
+
+        // Update S-meter dynamically
+        if (sFill && sValue) {
+          const pct = Math.round(25 + tunedSignal * 70);
+          sFill.style.width = `${pct}%`;
+          if (tunedSignal > 0.65) {
+            sValue.textContent = `S9 +${Math.round((tunedSignal - 0.5) * 40)}dB`;
+          } else {
+            sValue.textContent = `S${Math.max(2, Math.round(tunedSignal * 12))}`;
+          }
+        }
+
+        // Draw filled spectrum
+        ctx.beginPath();
+        ctx.moveTo(0, specH);
+        for (let i = 0; i < bins; i++) {
+          const x = (i / (bins - 1)) * W;
+          const y = specH - vals[i] * (specH - 18);
+          ctx.lineTo(x, y);
+        }
+        ctx.lineTo(W, specH);
+        ctx.closePath();
+        const grad = ctx.createLinearGradient(0, 0, 0, specH);
+        grad.addColorStop(0, 'rgba(56, 189, 248, 0.55)');
+        grad.addColorStop(1, 'rgba(14, 116, 144, 0.12)');
+        ctx.fillStyle = grad;
+        ctx.fill();
+
+        // Draw spectrum trace
+        ctx.beginPath();
+        for (let i = 0; i < bins; i++) {
+          const x = (i / (bins - 1)) * W;
+          const y = specH - vals[i] * (specH - 18);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 1.6;
+        ctx.stroke();
+
+        // Draw new waterfall top row (2px high)
+        const sliceW = W / bins;
+        for (let i = 0; i < bins; i++) {
+          const v = vals[i];
+          let r = 6, g = 24, b = 58;
+          if (v > 0.7) {
+            r = 250; g = 204; b = 21;
+          } else if (v > 0.42) {
+            r = 56; g = 189; b = 248;
+          } else if (v > 0.22) {
+            r = 14; g = 95; b = 170;
+          }
+          ctx.fillStyle = `rgb(${r},${g},${b})`;
+          ctx.fillRect(i * sliceW, wfY, Math.ceil(sliceW), 2);
+        }
+
+        requestAnimationFrame(renderFrame);
+      }
+
+      requestAnimationFrame(renderFrame);
+    }
+  });
+</script>
+
+<style>
+  .hero-section {
+    padding: 56px 0 72px;
+    border-top: none;
+  }
+
+  .hero-header {
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 44px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 14px;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .badge-cyan {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--accent);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+  }
+
+  .badge-green {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ade80;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+  }
+
+  .hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.6vw, 3.65rem);
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+    color: var(--text-bright);
+    margin-bottom: 20px;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.02rem, 1.4vw, 1.18rem);
+    color: var(--muted);
+    max-width: 780px;
+    margin: 0 auto 28px;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 36px;
+  }
+
+  .hero-metrics {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 22px;
+    padding: 14px 28px;
+    border-radius: 14px;
+    background: rgba(17, 26, 46, 0.72);
+    border: 1px solid var(--border);
+  }
+
+  .metric-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .metric-val {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: var(--accent);
+  }
+
+  .metric-lbl {
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+
+  .metric-divider {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+  }
+
+  /* Showcase Window */
+  .hero-showcase {
+    background: #0a101d;
+    border: 1px solid var(--border-bright);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow:
+      0 24px 60px -15px rgba(0, 0, 0, 0.8),
+      0 0 40px -10px rgba(56, 189, 248, 0.22);
+  }
+
+  .showcase-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px 18px;
+    background: #0f172a;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .window-dots {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .dot {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+  .dot-red { background: #ef4444; }
+  .dot-amber { background: #f59e0b; }
+  .dot-green { background: #22c55e; }
+
+  .window-title {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-left: 8px;
+  }
+
+  .showcase-mode-tabs {
+    display: flex;
+    gap: 8px;
+  }
+
+  .mode-tab {
+    background: var(--surface);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.83rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.18s ease;
+  }
+
+  .mode-tab.active,
+  .mode-tab:hover {
+    background: rgba(56, 189, 248, 0.16);
+    color: var(--text-bright);
+    border-color: var(--accent);
+  }
+
+  .showcase-pane {
+    display: none;
+  }
+
+  .showcase-pane.active {
+    display: block;
+  }
+
+  .real-shot-wrapper {
+    position: relative;
+    line-height: 0;
+  }
+
+  .hero-main-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .shot-badges-overlay {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 12px 18px;
+    background: rgba(11, 17, 32, 0.95);
+    border-top: 1px solid var(--border);
+    line-height: 1.4;
+  }
+
+  .overlay-chip {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    padding: 4px 12px;
+    border-radius: 6px;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.28);
+    color: var(--text);
+  }
+
+  /* Interactive Simulator Panel */
+  .sim-top-panel {
+    display: grid;
+    grid-template-columns: 1.2fr 1.3fr 1fr;
+    gap: 16px;
+    padding: 18px;
+    background: #0d1526;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sim-vfo-box,
+  .sim-bands-box,
+  .sim-smeter-box {
+    background: #080d18;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .sim-vfo-badges {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .vfo-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--muted);
+  }
+
+  .vfo-tag.active {
+    background: #0284c7;
+    color: #fff;
+    font-weight: 700;
+  }
+
+  .sim-freq-display {
+    font-family: var(--font-mono);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 0.03em;
+  }
+
+  .sim-freq-display small {
+    font-size: 0.9rem;
+    color: var(--muted);
+  }
+
+  .sim-vfob-line {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: #fbbf24;
+    margin-top: 4px;
+  }
+
+  .sim-box-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+
+  .sim-band-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .sim-band-btn {
+    background: var(--surface);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+
+  .sim-band-btn.active,
+  .sim-band-btn:hover {
+    background: rgba(56, 189, 248, 0.18);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  .sim-smeter-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    margin-bottom: 10px;
+  }
+
+  .sim-smeter-head strong {
+    color: var(--green);
+  }
+
+  .sim-smeter-bar {
+    height: 12px;
+    background: #131c31;
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+
+  .sim-smeter-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #22c55e 0%, #22c55e 70%, #ef4444 100%);
+    transition: width 0.12s ease;
+  }
+
+  .sim-smeter-scale {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--muted);
+  }
+
+  .sim-smeter-scale .red {
+    color: #ef4444;
+  }
+
+  .sim-canvas-wrap {
+    position: relative;
+    background: #060c18;
+    cursor: crosshair;
+    user-select: none;
+  }
+
+  .sim-bandplan-bar {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .bp-cw { background: rgba(14, 165, 233, 0.35); color: #bae6fd; padding: 3px 0; }
+  .bp-digi { background: rgba(168, 85, 247, 0.35); color: #e9d5ff; padding: 3px 0; }
+  .bp-ssb { background: rgba(34, 197, 94, 0.35); color: #bbf7d0; padding: 3px 0; }
+
+  #waterfallCanvas {
+    width: 100%;
+    height: 310px;
+    display: block;
+  }
+
+  .sim-tune-line {
+    position: absolute;
+    top: 22px;
+    bottom: 0;
+    width: 2px;
+    background: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    pointer-events: none;
+  }
+
+  .sim-hint {
+    padding: 8px 16px;
+    background: rgba(11, 17, 32, 0.92);
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  @media (max-width: 900px) {
+    .sim-top-panel {
+      grid-template-columns: 1fr;
+    }
+    .metric-divider {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,432 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout
+  title="Manual de Usuario — NetShack Control"
+  description="Documentación oficial bilingüe (ES/EN) de NetShack Control: instalación, conexión LAN/USB, operación de VFO y cascada, CW, controladores RC-28/MIDI, WSJT-X/rigctld y servidor Raspberry Pi."
+>
+  <main class="manual-page">
+    <div class="container manual-layout">
+      <aside class="manual-sidebar">
+        <div class="sidebar-card">
+          <div class="sidebar-title" data-i18n="man_sidebar_title">MANUAL DE USUARIO</div>
+          <nav class="sidebar-nav">
+            <a href="#intro" data-i18n="man_s1">1. Introducción</a>
+            <a href="#installation" data-i18n="man_s2">2. Instalación y compilación</a>
+            <a href="#connecting" data-i18n="man_s3">3. Conexión con la radio</a>
+            <a href="#operation" data-i18n="man_s4">4. Operación diaria</a>
+            <a href="#controllers" data-i18n="man_s5">5. Controladores físicos</a>
+            <a href="#integrations" data-i18n="man_s6">6. Integración con terceros</a>
+            <a href="#server" data-i18n="man_s7">7. Servidor remoto (Raspberry Pi)</a>
+          </nav>
+          <div class="sidebar-back">
+            <a href="/" class="btn btn-sm btn-secondary" style="width:100%;" data-i18n="man_back_home">
+              ← Volver al inicio
+            </a>
+          </div>
+        </div>
+      </aside>
+
+      <div class="manual-content">
+        <div class="manual-hero-banner">
+          <span class="section-eyebrow" data-i18n="man_badge">DOCUMENTACIÓN OFICIAL · ES / EN</span>
+          <h1 data-i18n="man_h1">Manual de Usuario de NetShack Control</h1>
+          <p data-i18n="man_lead">
+            Guía completa para instalar, conectar y operar <strong>netshack</strong>, <strong>nsc</strong> y <strong>netshack-server</strong> en Windows, macOS, Linux y Raspberry Pi.
+          </p>
+        </div>
+
+        <!-- Chapter 1: Intro -->
+        <article id="intro" class="doc-chapter">
+          <h2 data-i18n="man_s1">1. Introducción</h2>
+          <p data-i18n="man_c1_p1">
+            NetShack Control es un cliente nativo, multiplataforma y de código abierto (GPL-3.0-or-later) para controlar transceptores Icom por red (LAN/WLAN) o mediante servidor remoto USB, con interfaz y documentación bilingües (español e inglés).
+          </p>
+          <div class="doc-cards-row">
+            <div class="doc-mini-card">
+              <code>netshack</code>
+              <p data-i18n="man_c1_gui">Aplicación gráfica de escritorio (nsc-gui) con panel único, espectro y cascada a 30 fps, audio bidireccional, manipulador CW, memorias, macros y soporte de controladores físicos.</p>
+            </div>
+            <div class="doc-mini-card">
+              <code>nsc</code>
+              <p data-i18n="man_c1_cli">Herramienta de línea de comandos (nsc-cli) para automatización, scripts, lectura de medidores y puentes CAT (nsc bridge).</p>
+            </div>
+            <div class="doc-mini-card">
+              <code>netshack-server</code>
+              <p data-i18n="man_c1_srv">Servidor sin interfaz gráfica (nsc-server) para compartir radios conectadas por USB desde un PC o Raspberry Pi con control de permisos y Watchdog de PTT.</p>
+            </div>
+          </div>
+        </article>
+
+        <!-- Chapter 2: Installation -->
+        <article id="installation" class="doc-chapter">
+          <h2 data-i18n="man_s2">2. Instalación y compilación</h2>
+          <p data-i18n="man_c2_p1">
+            Descarga el paquete correspondiente a tu sistema operativo desde la página de Releases o compílalo directamente desde el código fuente con Rust 1.85 o superior:
+          </p>
+          <ul>
+            <li><strong>Windows (x86_64):</strong> <code>netshack-windows-x86_64.zip</code> (incluye <code>netshack.exe</code>, <code>nsc.exe</code> y <code>netshack-server.exe</code>).</li>
+            <li><strong>macOS (Apple Silicon / Intel):</strong> <code>netshack-macos-arm64.tar.gz</code> o <code>netshack-macos-x86_64.tar.gz</code>.</li>
+            <li><strong>Linux (x86_64 / ARM64):</strong> <code>sudo dpkg -i netshack-linux-amd64.deb</code> o archivo <code>.tar.gz</code>.</li>
+          </ul>
+          <pre><code>sudo apt install libasound2-dev libudev-dev
+cargo build --release --workspace</code></pre>
+          <p data-i18n="man_c2_p2">
+            Para cambiar el idioma de la interfaz gráfica o de la CLI en cualquier momento, utiliza el selector superior derecho en la ventana principal o pasa el argumento <code>--lang es</code> / <code>--lang en</code>.
+          </p>
+        </article>
+
+        <!-- Chapter 3: Connecting -->
+        <article id="connecting" class="doc-chapter">
+          <h2 data-i18n="man_s3">3. Conexión con la radio</h2>
+          <p data-i18n="man_c3_p1">
+            Abre «Radios…» en la barra superior para añadir o seleccionar un equipo de tu libreta de radios:
+          </p>
+          <ul>
+            <li data-i18n="man_c3_l1">
+              1. LAN / WLAN (Icom UDP): Introduce la IP o nombre del equipo, puerto de control (por defecto 50001), usuario y contraseña. La contraseña se guarda cifrada en el llavero del sistema operativo (Credential Manager, Keychain o Secret Service), nunca en texto plano.
+            </li>
+            <li data-i18n="man_c3_l2">
+              2. CI-V por TCP: Ideal para pruebas locales sin hardware usando radio-sim (127.0.0.1:50050) o pasarelas TCP.
+            </li>
+          </ul>
+          <div class="doc-alert" data-i18n="man_c3_alert">
+            🔒 Seguridad de red: El protocolo UDP de Icom no cifra el tráfico. Para operar fuera de tu red local, utiliza siempre una VPN como WireGuard o Tailscale y cumple la normativa de tu licencia de radioaficionado.
+          </div>
+        </article>
+
+        <!-- Chapter 4: Daily Operation -->
+        <article id="operation" class="doc-chapter">
+          <h2 data-i18n="man_s4">4. Operación diaria (VFO, espectro, CW y memorias)</h2>
+          <img
+            src="/imagenes/screenshots/Screenshot_1.jpg"
+            alt="Operación diaria en NetShack Control"
+            class="doc-screenshot"
+            loading="lazy"
+          />
+          <ul>
+            <li data-i18n="man_c4_l1">
+              Sintonía y VFOs: Gira la rueda del ratón sobre cualquier dígito de la frecuencia o sobre el dial rotatorio para sintonizar. En equipos de doble receptor (IC-7610, IC-9700, IC-7851, IC-7760) activa Dualwatch, M/S y el espectro doble simultáneo.
+            </li>
+            <li data-i18n="man_c4_l2">
+              Espectro y cascada: Haz clic o arrastra sobre cualquier señal en el espectro o cascada para sintonizar directamente. Dispone de zoom (1x–8x), retención de picos (Peak Hold) y plan de bandas IARU R1 integrado.
+            </li>
+            <li data-i18n="man_c4_l3">
+              CW, memorias de voz y escaneo: En la pestaña «CW / Voz» ajusta tono lateral, velocidad PPM, break-in (OFF/SEMI/FULL), envía texto por teclado y edita 8 macros CW (M1–M8) y 8 memorias de voz (T1–T8). En «Mem / Escaneo» gestiona canales de memoria, escaneos programados y las 12 macros rápidas (P1–P12).
+            </li>
+          </ul>
+        </article>
+
+        <!-- Chapter 5: Hardware Controllers -->
+        <article id="controllers" class="doc-chapter">
+          <h2 data-i18n="man_s5">5. Controladores físicos (RC-28, Shuttle, MIDI)</h2>
+          <p data-i18n="man_c5_p1">
+            Abre «Controladores…» en la barra superior para configurar superficies de control físico por USB:
+          </p>
+          <ul>
+            <li data-i18n="man_c5_l1">
+              Icom RC-28: Dial rotatorio USB oficial (VID 0x0C26 / PID 0x001E) con multiplicador dinámico de pasos, PTT momentáneo o conmutado y asignación de acciones a los botones F-1 y F-2.
+            </li>
+            <li data-i18n="man_c5_l2">
+              Contour ShuttleXpress / ShuttlePRO v2: Soporte nativo para la rueda central jog, el anillo exterior shuttle de velocidad variable y todos sus botones programables.
+            </li>
+            <li data-i18n="man_c5_l3">
+              MIDI y MIDI Learn: Selecciona cualquier puerto MIDI de entrada y pulsa «Aprender Nota → Acción», «Aprender Dial (CC relativo)» o «Aprender Potenciómetro (CC)» para asignar botones, encoders y deslizadores físicos a funciones y niveles de la radio.
+            </li>
+          </ul>
+        </article>
+
+        <!-- Chapter 6: Third-Party Integrations -->
+        <article id="integrations" class="doc-chapter">
+          <h2 data-i18n="man_s6">6. Integración con terceros (WSJT-X, fldigi, rigctld)</h2>
+          <p data-i18n="man_c6_p1">
+            Abre «Integraciones…» en la barra superior (o ejecuta <code>nsc bridge</code> desde la CLI) para compartir la radio simultáneamente con WSJT-X, JTDX, fldigi, GridTracker y libros de guardia:
+          </p>
+          <ul>
+            <li><strong>Hamlib <code>rigctld</code>:</strong> TCP <code>4532</code> (modelo Hamlib <code>3073</code> u otro según perfil).</li>
+            <li><strong>FLRig XML-RPC:</strong> TCP <code>12345</code>.</li>
+            <li><strong>CI-V crudo por TCP:</strong> TCP <code>50051</code>.</li>
+            <li data-i18n="man_c6_serial"><strong>Puerto serie virtual:</strong> mediante <code>nsc bridge --serial &lt;RUTA&gt;</code> con <code>com0com</code> en Windows (<code>\\.\CNCA0</code>) o <code>pty</code>/<code>socat</code> en Linux/macOS (<code>/dev/pts/X</code>).</li>
+          </ul>
+          <p data-i18n="man_c6_audio">
+            La ventana «Integraciones…» detecta automáticamente los dispositivos de audio virtual instalados en tu sistema: VB-Cable / Voicemeeter en Windows, BlackHole 2ch en macOS y null-sink de PipeWire o PulseAudio en Linux.
+          </p>
+        </article>
+
+        <!-- Chapter 7: Remote Server -->
+        <article id="server" class="doc-chapter">
+          <h2 data-i18n="man_s7">7. Modo servidor remoto (netshack-server)</h2>
+          <p data-i18n="man_c7_p1">
+            <code>netshack-server</code> permite operar en remoto cualquier radio conectada por USB (CI-V serie + códec de audio USB), por ejemplo desde una Raspberry Pi:
+          </p>
+          <pre><code>netshack-server --generate-config /etc/netshack/server.toml
+netshack-server --list-audio
+netshack-server --config /etc/netshack/server.toml</code></pre>
+          <ul>
+            <li data-i18n="man_c7_l1">
+              Permisos por operador: Cada usuario en server.toml tiene can_tx = true (control con transmisión) o can_tx = false (modo solo escucha).
+            </li>
+            <li data-i18n="man_c7_l2">
+              Watchdog de PTT: Corta la transmisión al instante si se pierde el keepalive del cliente o si se supera el temporizador máximo de transmisión TOT (ptt_tot_secs).
+            </li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </main>
+</Layout>
+
+<script is:inline>
+  window.registerTranslations({
+    es: {
+      man_sidebar_title: "MANUAL DE USUARIO",
+      man_s1: "1. Introducción",
+      man_s2: "2. Instalación y compilación",
+      man_s3: "3. Conexión con la radio",
+      man_s4: "4. Operación diaria (VFO, espectro, CW y memorias)",
+      man_s5: "5. Controladores físicos (RC-28, Shuttle, MIDI)",
+      man_s6: "6. Integración con terceros (WSJT-X, fldigi, rigctld)",
+      man_s7: "7. Modo servidor remoto (netshack-server)",
+      man_back_home: "← Volver al inicio",
+      man_badge: "DOCUMENTACIÓN OFICIAL · ES / EN",
+      man_h1: "Manual de Usuario de NetShack Control",
+      man_lead: "Guía completa para instalar, conectar y operar netshack, nsc y netshack-server en Windows, macOS, Linux y Raspberry Pi.",
+      man_c1_p1: "NetShack Control es un cliente nativo, multiplataforma y de código abierto (GPL-3.0-or-later) para controlar transceptores Icom por red (LAN/WLAN) o mediante servidor remoto USB, con interfaz y documentación bilingües (español e inglés).",
+      man_c1_gui: "Aplicación gráfica de escritorio (nsc-gui) con panel único, espectro y cascada a 30 fps, audio bidireccional, manipulador CW, memorias, macros y soporte de controladores físicos.",
+      man_c1_cli: "Herramienta de línea de comandos (nsc-cli) para automatización, scripts, lectura de medidores y puentes CAT (nsc bridge).",
+      man_c1_srv: "Servidor sin interfaz gráfica (nsc-server) para compartir radios conectadas por USB desde un PC o Raspberry Pi con control de permisos y Watchdog de PTT.",
+      man_c2_p1: "Descarga el paquete correspondiente a tu sistema operativo desde la página de Releases o compílalo directamente desde el código fuente con Rust 1.85 o superior:",
+      man_c2_p2: "Para cambiar el idioma de la interfaz gráfica o de la CLI en cualquier momento, utiliza el selector superior derecho en la ventana principal o pasa el argumento --lang es / --lang en.",
+      man_c3_p1: "Abre «Radios…» en la barra superior para añadir o seleccionar un equipo de tu libreta de radios:",
+      man_c3_l1: "1. LAN / WLAN (Icom UDP): Introduce la IP o nombre del equipo, puerto de control (por defecto 50001), usuario y contraseña. La contraseña se guarda cifrada en el llavero del sistema operativo (Credential Manager, Keychain o Secret Service), nunca en texto plano.",
+      man_c3_l2: "2. CI-V por TCP: Ideal para pruebas locales sin hardware usando radio-sim (127.0.0.1:50050) o pasarelas TCP.",
+      man_c3_alert: "🔒 Seguridad de red: El protocolo UDP de Icom no cifra el tráfico. Para operar fuera de tu red local, utiliza siempre una VPN como WireGuard o Tailscale y cumple la normativa de tu licencia de radioaficionado.",
+      man_c4_l1: "Sintonía y VFOs: Gira la rueda del ratón sobre cualquier dígito de la frecuencia o sobre el dial rotatorio para sintonizar. En equipos de doble receptor (IC-7610, IC-9700, IC-7851, IC-7760) activa Dualwatch, M/S y el espectro doble simultáneo.",
+      man_c4_l2: "Espectro y cascada: Haz clic o arrastra sobre cualquier señal en el espectro o cascada para sintonizar directamente. Dispone de zoom (1x–8x), retención de picos (Peak Hold) y plan de bandas IARU R1 integrado.",
+      man_c4_l3: "CW, memorias de voz y escaneo: En la pestaña «CW / Voz» ajusta tono lateral, velocidad PPM, break-in (OFF/SEMI/FULL), envía texto por teclado y edita 8 macros CW (M1–M8) y 8 memorias de voz (T1–T8). En «Mem / Escaneo» gestiona canales de memoria, escaneos programados y las 12 macros rápidas (P1–P12).",
+      man_c5_p1: "Abre «Controladores…» en la barra superior para configurar superficies de control físico por USB:",
+      man_c5_l1: "Icom RC-28: Dial rotatorio USB oficial (VID 0x0C26 / PID 0x001E) con multiplicador dinámico de pasos, PTT momentáneo o conmutado y asignación de acciones a los botones F-1 y F-2.",
+      man_c5_l2: "Contour ShuttleXpress / ShuttlePRO v2: Soporte nativo para la rueda central jog, el anillo exterior shuttle de velocidad variable y todos sus botones programables.",
+      man_c5_l3: "MIDI y MIDI Learn: Selecciona cualquier puerto MIDI de entrada y pulsa «Aprender Nota → Acción», «Aprender Dial (CC relativo)» o «Aprender Potenciómetro (CC)» para asignar botones, encoders y deslizadores físicos a funciones y niveles de la radio.",
+      man_c6_p1: "Abre «Integraciones…» en la barra superior (o ejecuta nsc bridge desde la CLI) para compartir la radio simultáneamente con WSJT-X, JTDX, fldigi, GridTracker y libros de guardia:",
+      man_c6_serial: "Puerto serie virtual: mediante nsc bridge --serial <RUTA> con com0com en Windows (\\\\.\\CNCA0) o pty/socat en Linux/macOS (/dev/pts/X).",
+      man_c6_audio: "La ventana «Integraciones…» detecta automáticamente los dispositivos de audio virtual instalados en tu sistema: VB-Cable / Voicemeeter en Windows, BlackHole 2ch en macOS y null-sink de PipeWire o PulseAudio en Linux.",
+      man_c7_p1: "netshack-server permite operar en remoto cualquier radio conectada por USB (CI-V serie + códec de audio USB), por ejemplo desde una Raspberry Pi:",
+      man_c7_l1: "Permisos por operador: Cada usuario en server.toml tiene can_tx = true (control con transmisión) o can_tx = false (modo solo escucha).",
+      man_c7_l2: "Watchdog de PTT: Corta la transmisión al instante si se pierde el keepalive del cliente o si se supera el temporizador máximo de transmisión TOT (ptt_tot_secs)."
+    },
+    en: {
+      man_sidebar_title: "USER MANUAL",
+      man_s1: "1. Introduction",
+      man_s2: "2. Installation & Building",
+      man_s3: "3. Connecting to the Radio",
+      man_s4: "4. Daily Operation (VFO, Spectrum, CW & Memories)",
+      man_s5: "5. Hardware Controllers (RC-28, Shuttle, MIDI)",
+      man_s6: "6. Third-Party Integrations (WSJT-X, fldigi, rigctld)",
+      man_s7: "7. Remote Server Mode (netshack-server)",
+      man_back_home: "← Back to Home",
+      man_badge: "OFFICIAL DOCUMENTATION · ES / EN",
+      man_h1: "NetShack Control User Manual",
+      man_lead: "Complete guide to installing, connecting, and operating netshack, nsc, and netshack-server on Windows, macOS, Linux, and Raspberry Pi.",
+      man_c1_p1: "NetShack Control is a native, cross-platform, open-source (GPL-3.0-or-later) client for controlling Icom transceivers over the network (LAN/WLAN) or via a remote USB server, featuring a bilingual interface and documentation (English and Spanish).",
+      man_c1_gui: "Desktop GUI application (nsc-gui) with a single-window layout, 30 fps real-time spectrum and waterfall, bidirectional audio, CW keyer, memories, macros, and hardware controller support.",
+      man_c1_cli: "Command-line utility (nsc-cli) for scripting, automation, live meter monitoring, and CAT bridges (nsc bridge).",
+      man_c1_srv: "Headless server daemon (nsc-server) to share USB-connected radios from a PC or Raspberry Pi with per-user permissions and a PTT Watchdog.",
+      man_c2_p1: "Download the prebuilt archive for your operating system from the Releases page or build directly from source with Rust 1.85 or newer:",
+      man_c2_p2: "To switch the GUI or CLI language at any time, use the language selector in the top bar of the main window or pass --lang en / --lang es.",
+      man_c3_p1: "Open 'Radios…' in the top bar to add or select a transceiver from your radio address book:",
+      man_c3_l1: "1. LAN / WLAN (Icom UDP): Enter the radio IP or hostname, control port (default 50001), username, and password. Your password is encrypted in your OS keyring (Credential Manager, Keychain, or Secret Service), never stored in plain text.",
+      man_c3_l2: "2. CI-V over TCP: Ideal for local hardware-free testing with radio-sim (127.0.0.1:50050) or TCP serial gateways.",
+      man_c3_alert: "🔒 Network Security: Icom's UDP protocol does not encrypt traffic. To operate outside your LAN, always use a VPN such as WireGuard or Tailscale and comply with your amateur radio license regulations.",
+      man_c4_l1: "Tuning & VFOs: Scroll the mouse wheel over any frequency digit or rotary dial to tune. On dual-receiver rigs (IC-7610, IC-9700, IC-7851, IC-7760), enable Dualwatch, M/S, and simultaneous dual spectrum.",
+      man_c4_l2: "Spectrum & Waterfall: Click or drag anywhere on the spectrum or waterfall to tune directly. Includes zoom (1x–8x), Peak Hold, and a built-in IARU R1 bandplan.",
+      man_c4_l3: "CW, Voice Memories & Scanning: In the 'CW / Voice' tab adjust sidetone pitch, WPM speed, break-in (OFF/SEMI/FULL), send keyboard CW, and edit 8 CW macros (M1–M8) and 8 voice memories (T1–T8). In 'Mem / Scan' manage memory channels, programmed scans, and 12 programmable macros (P1–P12).",
+      man_c5_p1: "Open 'Controllers…' in the top bar to configure USB hardware controllers:",
+      man_c5_l1: "Icom RC-28: Official USB rotary dial (VID 0x0C26 / PID 0x001E) with dynamic step multiplier, momentary or latched PTT, and custom actions for F-1 and F-2.",
+      man_c5_l2: "Contour ShuttleXpress / ShuttlePRO v2: Native support for the center jog wheel, variable-speed outer shuttle ring, and all programmable buttons.",
+      man_c5_l3: "MIDI & MIDI Learn: Select any MIDI input port and click 'Learn Note → Action', 'Learn Dial (Relative CC)', or 'Learn Fader (CC)' to map physical buttons, encoders, and faders to radio functions and levels.",
+      man_c6_p1: "Open 'Integrations…' in the top bar (or run nsc bridge from the CLI) to share the radio simultaneously with WSJT-X, JTDX, fldigi, GridTracker, and logging software:",
+      man_c6_serial: "Virtual serial port: via nsc bridge --serial <PATH> with com0com on Windows (\\\\.\\CNCA0) or pty/socat on Linux/macOS (/dev/pts/X).",
+      man_c6_audio: "The 'Integrations…' window automatically detects virtual audio devices installed on your system: VB-Cable / Voicemeeter on Windows, BlackHole 2ch on macOS, and PipeWire / PulseAudio null-sinks on Linux.",
+      man_c7_p1: "netshack-server lets you remotely operate any USB-connected radio (serial CI-V + USB audio codec), for instance from a Raspberry Pi:",
+      man_c7_l1: "Per-operator permissions: Each user in server.toml has can_tx = true (full TX control) or can_tx = false (receive-only mode).",
+      man_c7_l2: "PTT Watchdog: Immediately cuts transmission if client keepalive is lost or if the maximum transmit timer TOT (ptt_tot_secs) is exceeded."
+    }
+  });
+</script>
+
+<style>
+  .manual-page {
+    padding: 48px 0 80px;
+  }
+
+  .manual-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 36px;
+    align-items: start;
+  }
+
+  .manual-sidebar {
+    position: sticky;
+    top: 94px;
+  }
+
+  .sidebar-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 22px;
+  }
+
+  .sidebar-title {
+    font-family: var(--font-mono);
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+
+  .sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .sidebar-nav a {
+    color: var(--muted);
+    font-size: 0.9rem;
+    padding: 7px 10px;
+    border-radius: 8px;
+    transition: all 0.15s ease;
+  }
+
+  .sidebar-nav a:hover {
+    background: rgba(56, 189, 248, 0.12);
+    color: var(--text-bright);
+  }
+
+  .manual-hero-banner {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.14), rgba(17, 26, 46, 0.95));
+    border: 1px solid var(--border-bright);
+    border-radius: 18px;
+    padding: 32px;
+    margin-bottom: 28px;
+  }
+
+  .manual-hero-banner h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.5rem);
+    color: var(--text-bright);
+    margin-bottom: 10px;
+  }
+
+  .manual-hero-banner p {
+    color: var(--muted);
+    font-size: 1.04rem;
+  }
+
+  .doc-chapter {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 24px;
+    scroll-margin-top: 90px;
+  }
+
+  .doc-chapter h2 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    color: var(--text-bright);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(35, 50, 82, 0.65);
+  }
+
+  .doc-chapter p {
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .doc-chapter ul {
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: var(--muted);
+    margin-bottom: 16px;
+  }
+
+  .doc-chapter pre {
+    background: #060a14;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+    font-family: var(--font-mono);
+    font-size: 0.88rem;
+    color: #e2e8f0;
+    overflow-x: auto;
+    margin-bottom: 16px;
+  }
+
+  .doc-cards-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .doc-mini-card {
+    background: #0b1120;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px;
+  }
+
+  .doc-mini-card code {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  .doc-mini-card p {
+    font-size: 0.88rem;
+    margin-bottom: 0;
+  }
+
+  .doc-alert {
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #fde68a;
+    padding: 14px 18px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+  }
+
+  .doc-screenshot {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    border: 1px solid var(--border-bright);
+    margin-bottom: 18px;
+  }
+
+  @media (max-width: 940px) {
+    .manual-layout {
+      grid-template-columns: 1fr;
+    }
+    .manual-sidebar {
+      position: static;
+    }
+    .doc-cards-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
