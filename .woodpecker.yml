@@ -1,0 +1,198 @@
+# Pipeline de web-netshackcontrol, generado por el panel.
+#
+# Publica cada imagen con el SHA del commit y le pide al panel que la ponga en
+# producción. Es lo único que necesita el repositorio, además de los Dockerfile:
+# la configuración, las tareas y los procesos se declaran en el panel.
+#
+# Tres detalles que NO hay que "limpiar" al refactorizar, porque cada uno costó
+# una depuración:
+#
+#   1. DOCKER_CONFIG debe ser /kaniko/.docker. Bajo /tmp, Kaniko limpia el
+#      rootfs durante el build y el config desaparece antes del push: 401.
+#   2. Los steps de Kaniko NO llevan bloque `capabilities`. Woodpecker 3.17 solo
+#      mapea `capabilities.drop`, y `drop: [ALL]` rompe Kaniko en
+#      `chown /etc/gshadow`. El aislamiento lo da `hostUsers: false`.
+#   3. No usar buildkit rootless: exige seccomp/apparmor Unconfined, que el
+#      namespace de CI (Pod Security baseline) rechaza.
+
+variables:
+  - &kaniko ghcr.io/osscontainertools/kaniko:v1.28.3-debug@sha256:33f0c14d97d3e1f39b0c9ff26a4b1cd27575009b9d00719f2fdbe6c3e6b968a5
+  - &recursos_kaniko
+    hostUsers: false
+    resources:
+      requests: {cpu: 500m, memory: 1Gi, ephemeral-storage: 2Gi}
+      limits: {cpu: "2", memory: 3Gi, ephemeral-storage: 6Gi}
+    securityContext:
+      runAsUser: 0
+      runAsGroup: 0
+      allowPrivilegeEscalation: false
+      seccompProfile: {type: RuntimeDefault}
+      apparmorProfile: {type: RuntimeDefault}
+  - &rama_produccion main
+
+steps:
+  - name: build-validation-web
+    image: *kaniko
+    commands:
+      - |
+        /kaniko/executor \
+          --context="dir://$${CI_WORKSPACE}" \
+          --dockerfile="$${CI_WORKSPACE}/Dockerfile" \
+          --destination=web-netshackcontrol-web:validation \
+          --no-push
+    backend_options:
+      kubernetes: *recursos_kaniko
+    when:
+      - event: pull_request
+      - event: push
+        branch:
+          exclude: [main]
+
+  # --- Aviso de push --------------------------------------------------------
+  # Woodpecker es quien se entera del push: GitHub ya le manda el evento. Se lo
+  # cuenta al panel, y el panel decide a qué topic del grupo va. Usa el mismo
+  # panel_token que los demás pasos del panel, así que no hace falta ningún
+  # secreto nuevo.
+  #
+  # Si falla, no pasa nada: `failure: ignore` evita que quedarse sin avisar
+  # tumbe un pipeline que por lo demás iba bien.
+  - name: avisar-push
+    image: python:3.13-slim
+    failure: ignore
+    environment:
+      PANEL_URL: https://panel.apps.servicios-dns.com
+      PANEL_TOKEN:
+        from_secret: panel_token
+    commands:
+      - pip install --no-cache-dir httpx
+      - |
+        python - <<'PY'
+        import os, httpx
+        httpx.post(
+            os.environ["PANEL_URL"].rstrip("/") + "/api/v1/aviso",
+            headers={"Authorization": "Bearer " + os.environ["PANEL_TOKEN"]},
+            json={
+                "app": "web-netshackcontrol",
+                "evento": "push",
+                "rama": os.getenv("CI_COMMIT_BRANCH"),
+                "commit": os.getenv("CI_COMMIT_SHA"),
+                "autor": os.getenv("CI_COMMIT_AUTHOR"),
+                "mensaje": os.getenv("CI_COMMIT_MESSAGE"),
+                "url": os.getenv("CI_PIPELINE_URL"),
+            },
+            timeout=10,
+        ).raise_for_status()
+        PY
+    when:
+      - event: push
+
+  - name: publish-web
+    image: *kaniko
+    environment:
+      HARBOR_USERNAME:
+        from_secret: harbor_username
+      HARBOR_PASSWORD:
+        from_secret: harbor_password
+      DOCKER_CONFIG: /kaniko/.docker
+    commands:
+      - |
+        set -eu
+        mkdir -p "$${DOCKER_CONFIG}"
+        AUTH="$$(printf '%s:%s' "$${HARBOR_USERNAME}" "$${HARBOR_PASSWORD}" | base64 | tr -d '\n')"
+        printf '{"auths":{"hub.apps.servicios-dns.com":{"auth":"%s"}}}' "$${AUTH}" > "$${DOCKER_CONFIG}/config.json"
+        chmod 600 "$${DOCKER_CONFIG}/config.json"
+      - |
+        /kaniko/executor \
+          --context="dir://$${CI_WORKSPACE}" \
+          --dockerfile="$${CI_WORKSPACE}/Dockerfile" \
+          --destination="hub.apps.servicios-dns.com/web-netshackcontrol/web:$${CI_COMMIT_SHA}"
+    backend_options:
+      kubernetes: *recursos_kaniko
+    when:
+      - event: push
+        branch: *rama_produccion
+      - event: manual
+        branch: *rama_produccion
+
+  # --- Desplegar -------------------------------------------------------------
+  # Publicar la imagen no despliega nada: este paso le pide al panel que fije
+  # este commit en producción. Antes, el panel comprueba que la configuración
+  # obligatoria tenga valor y que todas las imágenes estén en Harbor; si algo
+  # falta, el paso falla diciendo qué, y producción sigue con lo que tenía.
+  # Va después de publicar TODAS las imágenes.
+  - name: desplegar
+    image: python:3.13-slim
+    environment:
+      PANEL_URL: https://panel.apps.servicios-dns.com
+      PANEL_TOKEN:
+        from_secret: panel_token
+    commands:
+      - pip install --no-cache-dir httpx
+      - |
+        python - <<'PY'
+        import os, sys, httpx
+        r = httpx.post(
+            os.environ["PANEL_URL"].rstrip("/") + "/api/v1/desplegar",
+            headers={"Authorization": "Bearer " + os.environ["PANEL_TOKEN"]},
+            json={
+                "app": "web-netshackcontrol",
+                "commit": os.environ["CI_COMMIT_SHA"],
+                "rama": os.getenv("CI_COMMIT_BRANCH"),
+                "pipeline": os.getenv("CI_PIPELINE_URL"),
+            },
+            timeout=60,
+        )
+        try:
+            datos = r.json()
+        except ValueError:
+            datos = {}
+        print(datos.get("mensaje") or datos.get("error") or r.text)
+        sys.exit(0 if r.is_success else 1)
+        PY
+    when:
+      - event: push
+        branch: *rama_produccion
+      - event: manual
+        branch: *rama_produccion
+
+  # --- Aviso de fallo -------------------------------------------------------
+  # Va al final y solo si algo ha fallado. Sin esto, un pipeline roto en la
+  # rama de producción no se lo cuenta a nadie: producción se queda con la
+  # versión anterior en silencio, que es justo lo que hay que saber.
+  #
+  # El `event` no sobra: sin él el paso entra también en los pipelines de PR,
+  # donde Woodpecker no deja usar panel_token, y rechaza el pipeline entero.
+  - name: avisar-fallo
+    image: python:3.13-slim
+    failure: ignore
+    environment:
+      PANEL_URL: https://panel.apps.servicios-dns.com
+      PANEL_TOKEN:
+        from_secret: panel_token
+    commands:
+      - pip install --no-cache-dir httpx
+      - |
+        python - <<'PY'
+        import os, httpx
+        httpx.post(
+            os.environ["PANEL_URL"].rstrip("/") + "/api/v1/aviso",
+            headers={"Authorization": "Bearer " + os.environ["PANEL_TOKEN"]},
+            json={
+                "app": "web-netshackcontrol",
+                "evento": "fallo",
+                "rama": os.getenv("CI_COMMIT_BRANCH"),
+                "commit": os.getenv("CI_COMMIT_SHA"),
+                "autor": os.getenv("CI_COMMIT_AUTHOR"),
+                "url": os.getenv("CI_PIPELINE_URL"),
+            },
+            timeout=10,
+        ).raise_for_status()
+        PY
+    when:
+      - event: [push, manual]
+        status: failure
+
+when:
+  - event: pull_request
+  - event: push
+  - event: manual

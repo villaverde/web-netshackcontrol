@@ -1,18 +1,19 @@
-# Stage 1: Build the Astro site
 FROM node:22-alpine AS builder
 WORKDIR /app
 ENV ASTRO_TELEMETRY_DISABLED=1
 
 COPY package*.json ./
-RUN npm install
+RUN npm ci
 
 COPY . .
 RUN npm run build
 
-# Stage 2: Serve static files with Nginx
-FROM nginx:1.27-alpine
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-COPY --from=builder /app/dist /usr/share/nginx/html
+FROM nginxinc/nginx-unprivileged:1.27-alpine
+USER root
+RUN addgroup -g 10001 -S appgroup && adduser -u 10001 -S -G appgroup -D -H appuser
+COPY --chown=10001:10001 nginx.conf /etc/nginx/nginx.conf
+COPY --from=builder --chown=10001:10001 /app/dist /usr/share/nginx/html
 
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+USER 10001:10001
+EXPOSE 8080
+ENTRYPOINT ["nginx", "-g", "daemon off;"]
